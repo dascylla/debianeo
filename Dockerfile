@@ -3,7 +3,7 @@ MAINTAINER Ronan Guilloux <ronan.guilloux@gmail.com>
 ENV DEBIAN_FRONTEND noninteractive
 RUN apt-get update && \
     apt-get -yq install \
-        sudo curl supervisor wget zip imagemagick
+        sudo curl supervisor wget zip imagemagick vim
 RUN apt-get install apt-transport-https lsb-release ca-certificates && \
     wget -O /etc/apt/trusted.gpg.d/php.gpg https://packages.sury.org/php/apt.gpg && \
     echo "deb https://packages.sury.org/php/ $(lsb_release -sc) main" > /etc/apt/sources.list.d/php.list
@@ -37,11 +37,9 @@ RUN sed -i "s/export APACHE_RUN_USER=www-data/export APACHE_RUN_USER=docker/" /e
     chown -R docker: /var/lock/apache2 && \
     echo "ServerName localhost" >> /etc/apache2/apache2.conf
 
-EXPOSE 80 3306
+EXPOSE 80 3306 9200
 
 ADD docker/supervisord.conf /etc/supervisor/conf.d/supervisord.conf
 
 USER docker
 WORKDIR /home/docker/
-
-
